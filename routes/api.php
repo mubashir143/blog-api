@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/test', function() {
-    return ["name" => "mubashir", "job" => "freelancing"];
-});
+Route::post('login', [UserAuthController::class, 'login']);
+
+Route::post('signup', [UserAuthController::class, 'signup']);
+
+
+// Route::get('/test', function() {
+//     return ["name" => "mubashir", "job" => "freelancing"];
+// });
+
+
+Route::group(['middleware'=>"auth:sanctum"], function(){
 
 Route::get('student', [StudentController::class,'list']);
 
@@ -33,3 +42,12 @@ Route::put('update-student', [StudentController::class, 'updateStudent']);
 Route::delete('delete-student/{id}', [StudentController::class, 'deleteStudent']);
 
 Route::get('search-student/{name}', [StudentController::class, 'searchStudent']);
+
+});
+
+
+Route::get('login', [UserAuthController::class, 'login'])->name('login');
+
+
+
+
